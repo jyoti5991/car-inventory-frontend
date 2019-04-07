@@ -12,7 +12,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr data-toggle="modal" data-target="#exampleModal"  *ngFor="let item of modelDetails; let i=index" (click)="setModalData(item)">
+          <tr class="modelData" data-toggle="modal" data-target="#exampleModal"  *ngFor="let item of modelDetails; let i=index" (click)="setModalData(item)">
             <th scope="row">{{i+1}}</th>
             <td>{{item.m_name | titlecase}}</td>
             <td>{{item.name | titlecase}}</td>

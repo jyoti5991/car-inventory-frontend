@@ -10,7 +10,7 @@ import { environment } from '../../../environments/environment';
 export class ListingComponent implements OnInit {
 
   modelDetails: []
-  modelInfo: []
+  modelInfo: any = []
   baseUrl: any
 
   constructor(public api : ApiService,) { }
@@ -26,8 +26,8 @@ export class ListingComponent implements OnInit {
     formData.set('type', 'getAllModelDetails');
     this.api.getModels(formData)
     .subscribe((response:any)=>{
+      this.modelDetails = [];
       if(response.length > 0) {
-        this.modelDetails = [];
         this.modelDetails = response;
       }
     });
