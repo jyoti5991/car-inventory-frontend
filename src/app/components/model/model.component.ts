@@ -13,6 +13,8 @@ export class ModelComponent implements OnInit {
   modelForm: FormGroup;
   docs: FormGroup;
   manufacturerList: []
+  default: string = 'select';
+  err: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -33,13 +35,14 @@ export class ModelComponent implements OnInit {
 
   ngOnInit() {
     this.modelForm = this.fb.group({
-      manufacturer_id: [''],
-      name: ['',  Validators.compose([Validators.required, Validators.minLength(5)])],
-      manufacturing_year: [''],
+      manufacturer_id: ['',  Validators.compose([Validators.required])],
+      name: ['',  Validators.compose([Validators.required])],
+      manufacturing_year: ['', Validators.compose([Validators.required])],
       registration_number: [''],
-      color: [''],
+      color: ['', Validators.compose([Validators.required])],
       note: [''],
     });
+    this.modelForm.get('manufacturer_id').setValue(this.default, {onlySelf: true});
     this.docs = this.fb.group({
       document_1: [''],
       document_2: [''],
@@ -47,6 +50,12 @@ export class ModelComponent implements OnInit {
   }
 
   get name() { return this.modelForm.get('name'); }
+
+  get manufacturing_year() { return this.modelForm.get('manufacturing_year'); }
+  
+  get color() { return this.modelForm.get('color'); }
+
+  get manufacturer_id() { return this.modelForm.get('manufacturer_id'); }
 
   fileUploader(event) {
     const elem = event.target;
@@ -66,7 +75,10 @@ export class ModelComponent implements OnInit {
     this.api.storeModel(formData)
     .subscribe((response:any)=>{
       if(response.status) {
+        this.err = false;
         this.router.navigate(['/listing']);
+      } else {
+        this.err = true;
       }
     })
   }

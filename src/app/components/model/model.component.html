@@ -6,41 +6,51 @@
       </div>
       <div class="d-flex">
         <div class="form-group col-sm-5">
-          <label for="exampleFormControlSelect1">Select Manufacturer</label>
+          <label for="exampleFormControlSelect1">Select Manufacturer <span class="required">*</span></label>
           <select class="form-control" id="exampleFormControlSelect1" formControlName="manufacturer_id">
-            <option *ngFor="let item of manufacturerList" value={{item.id}}>
+            <option value="select">Select manufacturer</option>
+            <option *ngFor="let item of manufacturerList; let i=index" value={{item.id}}>
               {{item.name}}
-              </option>
+            </option>
           </select>
+          <div *ngIf="manufacturer_id.invalid && (manufacturer_id.dirty || manufacturer_id.touched)" class="alert alert-danger">
+            <div *ngIf="manufacturer_id.errors.required">
+              Please select a Manufacturer.
+            </div>
+          </div>
         </div>
         <div class="form-group col-sm-5">
-          <label for="mname">Name</label>
-          <input type="text" class="form-control" id="mname" placeholder="Enter Model name"  formControlName="name">
-
-          <div *ngIf="name.invalid && (name.dirty || name.touched)"
-              class="alert alert-danger">
-
+          <label for="mname">Name <span class="required">*</span></label>
+          <input type="text" class="form-control" id="mname" placeholder="Enter Model Name"  formControlName="name">
+          <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger">
             <div *ngIf="name.errors.required">
               Name is required.
-            </div>
-            <div *ngIf="name.errors.minlength">
-              Name must be at least 5 characters long.
             </div>
           </div>
         </div>
       </div>
       <div class="form-group col-sm-5">
-        <label for="color">Color</label>
+        <label for="color">Color <span class="required">*</span></label>
         <input type="text" class="form-control" id="color" placeholder="Enter Model color"  formControlName="color">
+        <div *ngIf="color.invalid && (color.dirty || color.touched)" class="alert alert-danger">
+          <div *ngIf="color.errors.required">
+            Color is required.
+          </div>
+        </div>
       </div>
       <div class="d-flex">
         <div class="form-group col-sm-5">
-          <label for="manufacturing_year">Manufacturing Year</label>
-          <input type="number" class="form-control" id="manufacturing_year" placeholder="Enter Manufacturing year"  formControlName="manufacturing_year">
+          <label for="manufacturing_year">Manufacturing Year <span class="required">*</span></label>
+          <input type="number" class="form-control" id="manufacturing_year" placeholder="Enter Manufacturing Year"  formControlName="manufacturing_year">
+          <div *ngIf="manufacturing_year.invalid && (manufacturing_year.dirty || manufacturing_year.touched)" class="alert alert-danger">
+            <div *ngIf="manufacturing_year.errors.required">
+              Manufacturing Year is required.
+            </div>
+          </div>
         </div>
         <div class="form-group col-sm-5">
           <label for="registration_number">Registration Number</label>
-          <input type="number" class="form-control" id="registration_number" placeholder="Enter Registration number"  formControlName="registration_number">
+          <input type="number" class="form-control" id="registration_number" placeholder="Enter Registration Number"  formControlName="registration_number">
         </div>
       </div>
       <div class="form-group col-sm-10">
@@ -59,7 +69,9 @@
           (change)=fileUploader($event)>
         </div>
       </div>
-      
+      <div class="form-group col-sm-5" *ngIf="err">
+        <b><p class="required">Please fill the fields with *</p></b>
+      </div>
       <div class="form-group col-sm-5">
         <button type="submit" class="btn btn-primary" [disabled]="!modelForm.valid">Submit</button>
       </div>
