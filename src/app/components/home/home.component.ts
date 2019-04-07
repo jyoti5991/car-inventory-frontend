@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Home } from '../../home';
+import { FormGroup, FormBuilder, Validators  } from '@angular/forms';
+import { Router } from "@angular/router";
+
+import { ApiService } from '../../services/api.service'; 
 
 @Component({
   selector: 'app-home',
@@ -7,16 +10,33 @@ import { Home } from '../../home';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  form: Home = {
-    name: ''
-  };
-  constructor() { }
+  
+  manufacturerForm: FormGroup;
+
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    public api : ApiService,
+  ) { }
 
   ngOnInit() {
+    this.manufacturerForm = this.fb.group({
+      name: ['',  Validators.compose([Validators.required])],
+    });
   }
 
+  get name() { return this.manufacturerForm.get('name'); }
+
   onSubmit() {
-    console.log('Submit', JSON.stringify(this.form));
-    return false;
+    const formData = new FormData();
+    formData.append('data', JSON.stringify(this.manufacturerForm.value));
+    formData.append('op', 'manufacturer');
+    formData.append('type', 'addManufacturer');
+    this.api.storeModel(formData)
+    .subscribe((response:any)=>{
+      if(response.status) {
+        this.router.navigate(['/add-model']);
+      }
+    });
   }
 }
